@@ -1,6 +1,5 @@
 import datetime
 
-
 DATE = datetime.date(2015, 3, 2)
 FILE_NAMES = tuple(
     map(
