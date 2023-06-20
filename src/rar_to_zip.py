@@ -14,7 +14,7 @@ from zipfile import ZipFile
 import rarfile
 from rarfile import RarFile
 
-from python.archives.src.lib import get_file_names
+from file_system.src.core.funcs import get_file_names_match
 
 rarfile.TRY_ENCODINGS = ['utf8', 'utf-16le']
 rarfile.PATH_SEP = '/'
@@ -28,14 +28,15 @@ MATCHERS = ['reference-ru-mathematical-biology']
 os.chdir(PATH_SRC)
 
 
-ARCHIVE_NAMES = sorted(get_file_names(MATCHERS))
+ARCHIVE_NAMES = sorted(get_file_names_match(MATCHERS))
 
 
 for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
     print(f'<{archive_name:=^50}>')
     with RarFile(Path(PATH_SRC).joinpath(archive_name)) as archive_rar:
         for f in archive_rar.infolist():
-            if f.file_name.endswith('.pdf'):
+            SUFFIX = '.pdf'
+            if f.file_name.endswith(SUFFIX):
                 print(f'{f.filename}: {f.file_size / 1024 ** 2:,.2f} MB')
                 # =========================================================
                 # Extract from Archive
@@ -89,7 +90,7 @@ for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
 
 archive_name = 'dataset_rus_trud.rar'
 print(f'{archive_name:=^50}')
-shutil.copy(
+shutil.copy2(
     Path(PATH_SRC).joinpath(archive_name),
     Path(PATH_EXP).joinpath(archive_name)
 )
