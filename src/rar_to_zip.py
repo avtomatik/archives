@@ -11,7 +11,6 @@ import shutil
 import zipfile
 
 import rarfile
-from rarfile import RarFile
 
 from core.config import BASE_PATH, PATH_DST
 from core.funcs import get_file_names_match
@@ -29,7 +28,7 @@ ARCHIVE_NAMES = sorted(get_file_names_match(MATCHERS))
 
 for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
     print(f'<{archive_name:=^50}>')
-    with RarFile(BASE_PATH.joinpath(archive_name)) as archive_rar:
+    with rarfile.RarFile(BASE_PATH.joinpath(archive_name)) as archive_rar:
         for f in archive_rar.infolist():
             SUFFIX = '.pdf'
             if f.file_name.endswith(SUFFIX):
@@ -98,7 +97,7 @@ os.chdir(PATH_DST)
 # Create New Archive
 # =============================================================================
 with zipfile.ZipFile(f'{archive_name.stem}.zip', 'w') as archive_zip:
-    with RarFile(archive_name) as archive_rar:
+    with rarfile.RarFile(archive_name) as archive_rar:
         for f in archive_rar.infolist():
             print(f'{f.filename}: {f.file_size / 1024 ** 2:,.2f} MB')
             # =================================================================
