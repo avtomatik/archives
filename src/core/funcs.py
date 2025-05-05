@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar 25 23:29:45 2020
@@ -6,69 +7,90 @@ Created on Wed Mar 25 23:29:45 2020
 """
 
 import datetime
-import os
 import zipfile
 from pathlib import Path
 
 from core.funcs import get_file_names_match
 
 
-def push_files_to_zip(archive_name: str, file_names: tuple[str]) -> None:
-    with zipfile.ZipFile(archive_name, 'w') as archive:
-        for file_name in file_names:
-            archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)
-            os.unlink(file_name)
+def push_files_to_zip(
+    archive_path: Path,
+    file_paths: tuple[Path, ...]
+) -> None:
+    with zipfile.ZipFile(archive_path, 'w') as archive:
+        for file_path in file_paths:
+            archive.write(
+                file_path,
+                arcname=file_path.name,
+                compress_type=zipfile.ZIP_DEFLATED
+            )
+            file_path.unlink()
 
 
-def push_files_to_zip_if_exists(archive_path, MATCHERS):
+def push_files_to_zip_if_exists(archive_path: Path, matchers) -> None:
     if archive_path.exists():
         with zipfile.ZipFile(archive_path) as archive:
             archive.extractall()
 
-    push_files_to_zip(
-        archive_name=archive_path,
-        file_names=sorted(get_file_names_match(matchers=MATCHERS))
-    )
+    matched_files = sorted(get_file_names_match(matchers=matchers))
+    matched_paths = tuple(Path(f) for f in matched_files)
+    push_files_to_zip(archive_path, matched_paths)
 
 
-def push_files_to_zip_something(archive_path, MATCHERS):
+def push_files_to_zip_something(archive_path: Path, matchers) -> None:
     with zipfile.ZipFile(archive_path) as archive:
-        file_names = set(archive.namelist()) | set(
-            get_file_names_match(matchers=MATCHERS))
+        existing_files = set(archive.namelist())
+        new_files = set(get_file_names_match(matchers=matchers))
+        combined_files = existing_files | new_files
         archive.extractall()
 
-        push_files_to_zip(
-            archive_path,
-            tuple(file_names)
-        )
+        combined_paths = tuple(Path(f) for f in combined_files)
+        push_files_to_zip(archive_path, combined_paths)
 
-        archive_path = f'auto_insurance_{datetime.date.today()}'
-        push_files_to_zip(
-            archive_path,
-            tuple(get_file_names_match(matchers=MATCHERS))
-        )
+        dated_archive = Path(f'auto_insurance_{datetime.date.today()}.zip')
+        push_files_to_zip(dated_archive, combined_paths)
 
 
-def push_rename_files_to_zip(archive_name: str, mapping: dict[str, str]):
-    with zipfile.ZipFile(archive_name, 'w') as archive:
-        for fn_in, fn_ut in mapping.items():
-            os.rename(fn_in, fn_ut)
-            archive.write(fn_ut, compress_type=zipfile.ZIP_DEFLATED)
-            os.unlink(fn_ut)
+def push_rename_files_to_zip(
+    archive_path: Path,
+    mapping: dict[Path, Path]
+) -> None:
+    with zipfile.ZipFile(archive_path, 'w') as archive:
+        for src, dst in mapping.items():
+            src.rename(dst)
+            archive.write(
+                dst,
+                arcname=dst.name,
+                compress_type=zipfile.ZIP_DEFLATED
+            )
+            dst.unlink()
 
 
-def push_files_to_zip_unlink(archive_name: str, file_names: tuple[str], to_unlink: tuple[str]) -> None:
-    with zipfile.ZipFile(archive_name, 'w') as archive:
-        for file_name in file_names:
-            archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)
+def push_files_to_zip_unlink(
+    archive_path: Path,
+    file_paths: tuple[Path, ...],
+    paths_to_unlink: tuple[Path, ...]
+) -> None:
+    with zipfile.ZipFile(archive_path, 'w') as archive:
+        for file_path in file_paths:
+            archive.write(
+                file_path,
+                arcname=file_path.name,
+                compress_type=zipfile.ZIP_DEFLATED
+            )
 
-    for file_name in to_unlink:
-        os.unlink(file_name)
+    for file_path in paths_to_unlink:
+        file_path.unlink()
 
 
-def push_files_to_zip_conditional(file: Path, sequence: str) -> None:
-    with zipfile.ZipFile(file, 'w') as archive:
-        for file_name in os.listdir(file.parent):
-            if sequence in file_name.lower():
-                archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)
-                os.unlink(file_name)
+def push_files_to_zip_conditional(archive_path: Path, sequence: str) -> None:
+    directory = archive_path.parent
+    with zipfile.ZipFile(archive_path, 'w') as archive:
+        for file_path in directory.iterdir():
+            if sequence in file_path.name.lower() and file_path.is_file():
+                archive.write(
+                    file_path,
+                    arcname=file_path.name,
+                    compress_type=zipfile.ZIP_DEFLATED
+                )
+                file_path.unlink()
