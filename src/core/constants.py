@@ -31,8 +31,8 @@ FILE_NAMES = (
 
 
 kwargs = {
-    'archive_name': 'projectCensusComplex',
-    'file_names': (
+    'archive_path': 'projectCensusComplex.zip',
+    'file_paths': (
         'projectCensusComplex.py',
         'projectCensusComplexPlotKZF.pdf',
         'projectCensusComplexPlotKZF.xlsm',
@@ -43,7 +43,7 @@ kwargs = {
         'dataset_usa_cobb-douglas.zip',
         'dataset_douglas.zip',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectCensusComplex.py',
         'projectCensusComplexPlotKZF.pdf',
         'projectCensusComplexPlotKZF.xlsm',
@@ -54,8 +54,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectApproximation',
-    'file_names': (
+    'archive_path': 'projectApproximation.zip',
+    'file_paths': (
         'projectApproximation.py',
         'projectApproximationPlotApproxLinear.xlsm',
         'projectApproximationPlotApproxLogLinearA.xlsm',
@@ -69,7 +69,7 @@ kwargs = {
         'dataset USA FRB_H6.csv',
         'mcConnellBrue.zip',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectApproximation.py',
         'projectApproximationPlotApproxLinear.xlsm',
         'projectApproximationPlotApproxLogLinearA.xlsm',
@@ -79,8 +79,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectCapital',
-    'file_names': (
+    'archive_path': 'projectCapital.zip',
+    'file_paths': (
         'projectCapital.py',
         'projectCapitalInteractive.py',
         'projectCapital.pdf',
@@ -93,7 +93,7 @@ kwargs = {
         'dataset USA FRB_G17_All_Annual 2013-06-23.csv',
         'dataset_usa_bea-sfat-release-2017-08-23-SectionAll_xls.zip',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectCapital.py',
         'projectCapitalInteractive.py',
         'projectCapital.pdf',
@@ -104,8 +104,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectElasticity',
-    'file_names': (
+    'archive_path': 'projectElasticity.zip',
+    'file_paths': (
         'projectElasticity.py',
         'projectElasticityPlotElasticity.docx',
         'projectElasticityPlotElasticity.xlsm',
@@ -117,7 +117,7 @@ kwargs = {
         'dataset_usa_bea-sfat-release-2012-08-15-SectionAll_xls.zip',
         'dataset USA FRB_H6.csv',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectElasticity.py',
         'projectElasticityPlotElasticity.docx',
         'projectElasticityPlotElasticity.xlsm',
@@ -126,8 +126,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectMSpline',
-    'file_names': (
+    'archive_path': 'projectMSpline.zip',
+    'file_paths': (
         'projectMSpline.py',
         'projectMSplineEA.xlsm',
         'projectMSplineEB.xlsm',
@@ -141,7 +141,7 @@ kwargs = {
         'dataset_usa_cobb-douglas.zip',
         'dataset_douglas.zip',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectMSpline.py',
         'projectMSplineEA.xlsm',
         'projectMSplineEB.xlsm',
@@ -156,8 +156,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectAntipov',
-    'file_names': (
+    'archive_path': 'projectAntipov.zip',
+    'file_paths': (
         'projectAntipov.py',
         'projectAntipov.docx',
         'projectAntipov.pdf',
@@ -173,7 +173,7 @@ kwargs = {
         'dataset_usa_bea-sfat-release-2017-08-23-SectionAll_xls.zip',
         'dataset USA FRB_H6.csv',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectAntipov.py',
         'projectAntipov.docx',
         'projectAntipov.pdf',
@@ -182,8 +182,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectPrices',
-    'file_names': (
+    'archive_path': 'projectPrices.zip',
+    'file_paths': (
         'prices.py',
         'prices.pdf',
         'pricesDatasetBeaGdp.xlsm',
@@ -194,7 +194,7 @@ kwargs = {
         'dataset_usa_bea-release-2013-01-31-SectionAll_xls_1969_2012.zip',
         'dataset USA BLS cpiai.txt',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'prices.py',
         'prices.pdf',
         'pricesDatasetBeaGdp.xlsm',
@@ -205,8 +205,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'projectAutocorrelation',
-    'file_names': (
+    'archive_path': 'projectAutocorrelation.zip',
+    'file_paths': (
         'projectAutocorrelation.py',
         'projectAutocorrelation.xlsm',
         'projectAutocorrelationAlpha.docx',
@@ -215,7 +215,7 @@ kwargs = {
         'dataset USA FRB_G17_All_Annual 2013-06-23.csv',
         'datasetAutocorrelation.txt',
     ),
-    'to_unlink': (
+    'paths_to_unlink': (
         'projectAutocorrelation.py',
         'projectAutocorrelation.xlsm',
         'projectAutocorrelationAlpha.docx',
@@ -227,8 +227,8 @@ kwargs = {
 
 
 kwargs = {
-    'archive_name': 'graduate_project',
-    'file_names': (
+    'archive_path': 'graduate_project.zip',
+    'file_paths': (
         'Graduate Project fg_s.xlsx',
         'Graduate Project Financial Plan Revised.xlsx',
         'Graduate Project Financial Plan.xlsx',
@@ -241,7 +241,7 @@ kwargs = {
 
 
 kwargs = {
-    'file_names': (
+    'file_paths': (
         'favppvpdf.pdf',
         'GraphDd1-12.zip',
         'TableDd1-12-csv.zip',

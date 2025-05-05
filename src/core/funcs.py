@@ -10,7 +10,18 @@ import datetime
 import zipfile
 from pathlib import Path
 
-from core.funcs import get_file_names_match
+
+def get_file_names_match(matchers: list[str]) -> list[Path]:
+    # TODO: Replace with Actual Function
+    """Placeholder Function.
+
+    Args:
+        matchers (list[str]): _description_
+
+    Returns:
+        list[Path]: _description_
+    """
+    return list[matchers]
 
 
 def zip_and_delete_files(
