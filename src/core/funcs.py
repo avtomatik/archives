@@ -8,14 +8,13 @@ Created on Wed Mar 25 23:29:45 2020
 import datetime
 import os
 import zipfile
-from pathlib import PosixPath
-from zipfile import ZipFile
+from pathlib import Path
 
-from file_system.src.core.funcs import get_file_names_match
+from core.funcs import get_file_names_match
 
 
 def push_files_to_zip(archive_name: str, file_names: tuple[str]) -> None:
-    with ZipFile(archive_name, 'w') as archive:
+    with zipfile.ZipFile(archive_name, 'w') as archive:
         for file_name in file_names:
             archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)
             os.unlink(file_name)
@@ -23,7 +22,7 @@ def push_files_to_zip(archive_name: str, file_names: tuple[str]) -> None:
 
 def push_files_to_zip_if_exists(archive_path, MATCHERS):
     if archive_path.exists():
-        with ZipFile(archive_path) as archive:
+        with zipfile.ZipFile(archive_path) as archive:
             archive.extractall()
 
     push_files_to_zip(
@@ -33,7 +32,7 @@ def push_files_to_zip_if_exists(archive_path, MATCHERS):
 
 
 def push_files_to_zip_something(archive_path, MATCHERS):
-    with ZipFile(archive_path) as archive:
+    with zipfile.ZipFile(archive_path) as archive:
         file_names = set(archive.namelist()) | set(
             get_file_names_match(matchers=MATCHERS))
         archive.extractall()
@@ -51,7 +50,7 @@ def push_files_to_zip_something(archive_path, MATCHERS):
 
 
 def push_rename_files_to_zip(archive_name: str, mapping: dict[str, str]):
-    with ZipFile(archive_name, 'w') as archive:
+    with zipfile.ZipFile(archive_name, 'w') as archive:
         for fn_in, fn_ut in mapping.items():
             os.rename(fn_in, fn_ut)
             archive.write(fn_ut, compress_type=zipfile.ZIP_DEFLATED)
@@ -59,7 +58,7 @@ def push_rename_files_to_zip(archive_name: str, mapping: dict[str, str]):
 
 
 def push_files_to_zip_unlink(archive_name: str, file_names: tuple[str], to_unlink: tuple[str]) -> None:
-    with ZipFile(archive_name, 'w') as archive:
+    with zipfile.ZipFile(archive_name, 'w') as archive:
         for file_name in file_names:
             archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)
 
@@ -67,8 +66,8 @@ def push_files_to_zip_unlink(archive_name: str, file_names: tuple[str], to_unlin
         os.unlink(file_name)
 
 
-def push_files_to_zip_conditional(file: PosixPath, sequence: str) -> None:
-    with ZipFile(file, 'w') as archive:
+def push_files_to_zip_conditional(file: Path, sequence: str) -> None:
+    with zipfile.ZipFile(file, 'w') as archive:
         for file_name in os.listdir(file.parent):
             if sequence in file_name.lower():
                 archive.write(file_name, compress_type=zipfile.ZIP_DEFLATED)

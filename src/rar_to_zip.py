@@ -4,28 +4,24 @@ Created on Wed Mar 25 23:29:45 2020
 
 @author: Alexander Mikhailov
 """
+
 import os
 import re
 import shutil
 import zipfile
-from pathlib import Path
-from zipfile import ZipFile
 
 import rarfile
 from rarfile import RarFile
 
-from file_system.src.core.funcs import get_file_names_match
+from core.config import BASE_PATH, PATH_DST
+from core.funcs import get_file_names_match
 
 rarfile.TRY_ENCODINGS = ['utf8', 'utf-16le']
 rarfile.PATH_SEP = '/'
 
 
-PATH_SRC = '/media/green-machine/KINGSTON'
-PATH_EXP = '/home/green-machine/Documents'
-
-
 MATCHERS = ['reference-ru-mathematical-biology']
-os.chdir(PATH_SRC)
+os.chdir(BASE_PATH)
 
 
 ARCHIVE_NAMES = sorted(get_file_names_match(MATCHERS))
@@ -33,7 +29,7 @@ ARCHIVE_NAMES = sorted(get_file_names_match(MATCHERS))
 
 for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
     print(f'<{archive_name:=^50}>')
-    with RarFile(Path(PATH_SRC).joinpath(archive_name)) as archive_rar:
+    with RarFile(BASE_PATH.joinpath(archive_name)) as archive_rar:
         for f in archive_rar.infolist():
             SUFFIX = '.pdf'
             if f.file_name.endswith(SUFFIX):
@@ -41,23 +37,23 @@ for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
                 # =========================================================
                 # Extract from Archive
                 # =========================================================
-                archive_rar.extract(f.file_name, path=PATH_EXP)
+                archive_rar.extract(f.file_name, path=PATH_DST)
                 # =========================================================
                 # Move Closer to Root
                 # =========================================================
                 shutil.move(
-                    Path(PATH_EXP).joinpath(f.file_name),
-                    Path(PATH_EXP).joinpath(f.file_name[8:])
+                    PATH_DST.joinpath(f.file_name),
+                    PATH_DST.joinpath(f.file_name[8:])
                 )
                 # =========================================================
                 # Delete Previous Folder
                 # =========================================================
-                os.rmdir(Path(PATH_EXP).joinpath(f.file_name[:8]))
-                os.chdir(PATH_EXP)  # Change Folder
+                os.rmdir(PATH_DST.joinpath(f.file_name[:8]))
+                os.chdir(PATH_DST)  # Change Folder
                 # =========================================================
                 # Create New Archive
                 # =========================================================
-                with ZipFile(f'reference-ru-mathematical-biology{_:02n}.zip', 'w') as archive_zip:
+                with zipfile.ZipFile(f'reference-ru-mathematical-biology{_:02n}.zip', 'w') as archive_zip:
                     new_file_name = re.sub(' ', '_', f.file_name[8:])
                     # =====================================================
                     # Rename Extracted File
@@ -76,32 +72,32 @@ for _, archive_name in enumerate(ARCHIVE_NAMES, start=1):
                 # Move New Archive
                 # =========================================================
                 shutil.move(
-                    Path(PATH_EXP).joinpath(
+                    PATH_DST.joinpath(
                         f'reference-ru-mathematical-biology{_:02n}.zip'),
-                    Path(PATH_SRC).joinpath(
+                    BASE_PATH.joinpath(
                         f'reference-ru-mathematical-biology{_:02n}.zip')
                 )
                 # =========================================================
                 # Delete Archive
                 # =========================================================
-                os.chdir(Path(PATH_SRC).joinpath(archive_name))
+                os.chdir(BASE_PATH.joinpath(archive_name))
                 print(f'{new_file_name}: Done')
 
 
 archive_name = 'dataset_rus_trud.rar'
 print(f'{archive_name:=^50}')
 shutil.copy2(
-    Path(PATH_SRC).joinpath(archive_name),
-    Path(PATH_EXP).joinpath(archive_name)
+    BASE_PATH.joinpath(archive_name),
+    PATH_DST.joinpath(archive_name)
 )
 # =============================================================================
 # Change Folder
 # =============================================================================
-os.chdir(PATH_EXP)
+os.chdir(PATH_DST)
 # =============================================================================
 # Create New Archive
 # =============================================================================
-with ZipFile(f'{Path(archive_name).stem}.zip', 'w') as archive_zip:
+with zipfile.ZipFile(f'{archive_name.stem}.zip', 'w') as archive_zip:
     with RarFile(archive_name) as archive_rar:
         for f in archive_rar.infolist():
             print(f'{f.filename}: {f.file_size / 1024 ** 2:,.2f} MB')
@@ -120,6 +116,6 @@ with ZipFile(f'{Path(archive_name).stem}.zip', 'w') as archive_zip:
             print(f'{f.file_name}: Done')
 
 shutil.move(
-    Path(PATH_EXP).joinpath(archive_name),
-    Path(PATH_SRC).joinpath(archive_name)
+    PATH_DST.joinpath(archive_name),
+    BASE_PATH.joinpath(archive_name)
 )
